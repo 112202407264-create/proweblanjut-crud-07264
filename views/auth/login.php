@@ -1,63 +1,6 @@
 <?php
-session_start();
-require_once 'koneksi.php';
-define('COOKIE_REMEMBER', 'remember_me');
-define('COOKIE_DURASI', 1 * 60);
-
-if (empty($_SESSION['user_id']) && !empty($_COOKIE[COOKIE_REMEMBER])) {
-    $uid  = (int) $_COOKIE[COOKIE_REMEMBER]; // ambil user_id dari cookie
-    // Cari user di database menggunakan PDO
-    $stmt = $pdo->prepare('SELECT user_id, username FROM users WHERE user_id = ? LIMIT 1');
-    $stmt->execute([$uid]);
-    $user = $stmt->fetch();
-
-    if ($user) {
-        // User ditemukan → isi session seperti biasa
-        $_SESSION['user_id']  = (int) $user['user_id'];
-        $_SESSION['username'] = $user['username'];
-    } else {
-        // Cookie tidak valid (user sudah dihapus dari DB) → hapus cookie
-        setcookie(COOKIE_REMEMBER, '', time() - 3600, '/');
-    }
-}
-
-if (!empty($_SESSION['user_id'])) {
-    header('Location: pages/dashboard.php');
-    exit;
-}
-
-$error = '';
-$msg   = $_GET['msg'] ?? '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $username   = trim($_POST['username'] ?? '');
-    $password   = $_POST['password']      ?? '';
-    $rememberMe = isset($_POST['remember_me']); // true jika dicentang
-
-    if ($username === '' || $password === '') {
-        $error = 'Username dan password wajib diisi.';
-
-    } else {
-        // Cari user berdasarkan username (PDO prepared statement → aman dari SQL injection)
-        $stmt = $pdo->prepare('SELECT user_id, username, password_hash FROM users WHERE username = ? LIMIT 1');
-        $stmt->execute([$username]);
-        $user = $stmt->fetch();
-        if (!$user || !password_verify($password, $user['password_hash'])) {
-            $error = 'Username atau password salah.';
-        } else {
-            $_SESSION['user_id']  = (int) $user['user_id'];
-            $_SESSION['username'] = $user['username'];
-            if ($rememberMe) {
-                setcookie(COOKIE_REMEMBER, (string) $user['user_id'], time() + COOKIE_DURASI, '/');
-            }
-            header('Location: pages/dashboard.php');
-            exit;
-        }
-    }
-}
-
-$cssVer = file_exists(__DIR__ . '/assets/app.css') ? filemtime(__DIR__ . '/assets/app.css') : time();
+// views/auth/login.php
+$cssVer = file_exists(__DIR__ . '/../../assets/app.css') ? filemtime(__DIR__ . '/../../assets/app.css') : time();
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -80,19 +23,19 @@ $cssVer = file_exists(__DIR__ . '/assets/app.css') ? filemtime(__DIR__ . '/asset
 
     <div class="auth-card-body">
 
-        <?php if ($msg): ?>
+        <?php if (!empty($msg)): ?>
             <div class="alert alert-success" role="alert">
                 <?= htmlspecialchars($msg) ?>
             </div>
         <?php endif; ?>
 
-        <?php if ($error): ?>
+        <?php if (!empty($error)): ?>
             <div class="alert alert-danger" role="alert">
                 <?= htmlspecialchars($error) ?>
             </div>
         <?php endif; ?>
 
-        <form class="auth-form" method="post" action="">
+        <form class="auth-form" method="post" action="index.php?action=login">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required
@@ -118,7 +61,7 @@ $cssVer = file_exists(__DIR__ . '/assets/app.css') ? filemtime(__DIR__ . '/asset
         </form>
 
         <div class="text-center mt-3 small">
-            Belum punya akun? <a href="register.php" class="auth-link">Daftar di sini</a>
+            Belum punya akun? <a href="index.php?action=register" class="auth-link">Daftar di sini</a>
         </div>
     </div>
 </div>

@@ -3,18 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!isset($baseUrl)) {
-    $baseUrl = '';
-}
 $pageTitle = isset($pageTitle) ? $pageTitle . ' — ' : '';
-
-// Path absolut ke folder project agar CSS selalu terbaca dari semua halaman
-$scriptPath = str_replace('\\', '/', $_SERVER['SCRIPT_NAME']);
-$projectDir = dirname($scriptPath);
-if (basename($projectDir) === 'pages') {
-    $projectDir = dirname($projectDir);
-}
-$cssHref = (strlen($projectDir) > 1 ? $projectDir : '') . '/assets/app.css';
+$cssVer = file_exists(__DIR__ . '/../../assets/app.css') ? filemtime(__DIR__ . '/../../assets/app.css') : time();
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -26,11 +16,7 @@ $cssHref = (strlen($projectDir) > 1 ? $projectDir : '') . '/assets/app.css';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
-    <?php
-$cssFile = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'app.css';
-$cssVer = file_exists($cssFile) ? filemtime($cssFile) : time();
-?>
-    <link rel="stylesheet" type="text/css" href="<?= htmlspecialchars($cssHref) ?>?v=<?= (int) $cssVer ?>">
+    <link rel="stylesheet" type="text/css" href="assets/app.css?v=<?= (int) $cssVer ?>">
 </head>
 <body class="app-body">
 
@@ -49,7 +35,7 @@ if ($hour >= 5 && $hour < 12) {
 <header class="app-topbar shadow-sm">
     <div class="app-topbar-inner container-fluid">
         <div class="d-flex align-items-center gap-3">
-            <a class="app-topbar-brand" href="<?= $baseUrl ?>index.php">
+            <a class="app-topbar-brand" href="index.php?action=home">
                 <span class="app-topbar-icon">
                     <i class="fa-solid fa-shoe-prints"></i>
                 </span>
@@ -65,12 +51,13 @@ if ($hour >= 5 && $hour < 12) {
         </div>
 
         <div class="app-topbar-right d-flex align-items-center gap-3">
-            <form class="d-none d-lg-flex align-items-center" role="search" action="<?= $baseUrl ?>pages/data_barang.php" method="get">
+            <form class="d-none d-lg-flex align-items-center" role="search" action="index.php" method="get">
+                <input type="hidden" name="action" value="home">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-transparent border-end-0">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" class="form-control border-start-0" name="q" placeholder="Cari barang...">
+                    <input type="text" class="form-control border-start-0" name="q" placeholder="Cari barang..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
                 </div>
             </form>
 
@@ -93,13 +80,13 @@ if ($hour >= 5 && $hour < 12) {
                     <li><hr class="dropdown-divider"></li>
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <li>
-                            <a class="dropdown-item text-danger" href="<?= $baseUrl ?>logout.php">
+                            <a class="dropdown-item text-danger" href="index.php?action=logout">
                                 <i class="fa-solid fa-right-from-bracket me-2"></i>Keluar
                             </a>
                         </li>
                     <?php else: ?>
                         <li>
-                            <a class="dropdown-item" href="<?= $baseUrl ?>login.php">
+                            <a class="dropdown-item" href="index.php?action=login">
                                 <i class="fa-solid fa-right-to-bracket me-2"></i>Masuk
                             </a>
                         </li>

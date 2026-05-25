@@ -1,7 +1,8 @@
 <?php
+// config/database.php
 
 $host = 'localhost';
-$db   = 'pwl_inventaris'; 
+$db   = 'pwl_crud'; 
 $user = 'root';           
 $pass = '';               
 
@@ -18,4 +19,3 @@ try {
 } catch (PDOException $e) {
     die('Koneksi ke database gagal: ' . $e->getMessage());
 }
-

@@ -1,5 +1,5 @@
 <?php
-$baseUrl = isset($baseUrl) ? $baseUrl : '';
+// views/layout/footer.php
 ?>
 </main>
 
@@ -11,9 +11,9 @@ $baseUrl = isset($baseUrl) ? $baseUrl : '';
                 Inventaris Sepatu
             </div>
             <div class="app-footer-links">
-                <a href="<?= $baseUrl ?>pages/dashboard.php">Dashboard</a>
-                <a href="<?= $baseUrl ?>index.php">Data Barang</a>
-                <a href="<?= $baseUrl ?>tambah.php">Tambah Barang</a>
+                <a href="index.php?action=dashboard">Dashboard</a>
+                <a href="index.php?action=home">Data Barang</a>
+                <a href="index.php?action=tambah">Tambah Barang</a>
             </div>
             <div class="app-footer-copy">
                 &copy; <?= date('Y') ?> Inventaris Sepatu. Semua hak dilindungi.
