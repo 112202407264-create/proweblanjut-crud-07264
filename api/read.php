@@ -5,7 +5,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
 
 require_once '../config/database.php';
-require_once '../models/Barang.php';
+require_once '../app/models/Barang.php';
 
 try {
     $barangModel = new Barang($pdo);

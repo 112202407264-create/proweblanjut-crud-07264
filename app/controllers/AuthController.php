@@ -3,7 +3,7 @@ class AuthController {
     private $userModel;
 
     public function __construct($pdo) {
-        require_once 'models/User.php';
+        require_once 'app/models/User.php';
         $this->userModel = new User($pdo);
     }
 
@@ -52,7 +52,7 @@ class AuthController {
             }
         }
 
-        require 'views/auth/login.php';
+        require 'app/views/auth/login.php';
     }
 
     public function register() {
@@ -94,7 +94,7 @@ class AuthController {
             }
         }
 
-        require 'views/auth/register.php';
+        require 'app/views/auth/register.php';
     }
 
     public function logout() {

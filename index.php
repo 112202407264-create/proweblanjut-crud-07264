@@ -5,8 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once 'config/database.php';
-require_once 'controllers/AuthController.php';
-require_once 'controllers/BarangController.php';
+require_once 'app/controllers/AuthController.php';
+require_once 'app/controllers/BarangController.php';
 
 $action = $_GET['action'] ?? 'home';
 

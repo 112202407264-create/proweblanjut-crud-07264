@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' && $_SERVER['REQUEST_METHOD'] !== 'PUT
 }
 
 require_once '../config/database.php';
-require_once '../models/Barang.php';
+require_once '../app/models/Barang.php';
 
 // Ambil input JSON atau form data (PUT biasanya masuk php://input)
 $input = json_decode(file_get_contents("php://input"), true);

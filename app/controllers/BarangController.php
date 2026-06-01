@@ -4,7 +4,7 @@ class BarangController {
 
     public function __construct($pdo) {
         $this->checkAuth();
-        require_once 'models/Barang.php';
+        require_once 'app/models/Barang.php';
         $this->barangModel = new Barang($pdo);
     }
 
@@ -20,9 +20,9 @@ class BarangController {
 
     public function dashboard() {
         $pageTitle = 'Dashboard';
-        require 'views/layout/header.php';
-        require 'views/dashboard/index.php';
-        require 'views/layout/footer.php';
+        require 'app/views/layout/header.php';
+        require 'app/views/dashboard/index.php';
+        require 'app/views/layout/footer.php';
     }
 
     public function index() {
@@ -37,9 +37,9 @@ class BarangController {
         }
 
         $pageTitle = 'Data Barang';
-        require 'views/layout/header.php';
-        require 'views/barang/index.php';
-        require 'views/layout/footer.php';
+        require 'app/views/layout/header.php';
+        require 'app/views/barang/index.php';
+        require 'app/views/layout/footer.php';
     }
 
     public function tambah() {
@@ -112,9 +112,9 @@ class BarangController {
         }
 
         $pageTitle = 'Tambah Sepatu';
-        require 'views/layout/header.php';
-        require 'views/barang/tambah.php';
-        require 'views/layout/footer.php';
+        require 'app/views/layout/header.php';
+        require 'app/views/barang/tambah.php';
+        require 'app/views/layout/footer.php';
     }
 
     public function edit() {
@@ -190,9 +190,9 @@ class BarangController {
         }
 
         $pageTitle = 'Edit Sepatu';
-        require 'views/layout/header.php';
-        require 'views/barang/edit.php';
-        require 'views/layout/footer.php';
+        require 'app/views/layout/header.php';
+        require 'app/views/barang/edit.php';
+        require 'app/views/layout/footer.php';
     }
 
     public function hapus() {
